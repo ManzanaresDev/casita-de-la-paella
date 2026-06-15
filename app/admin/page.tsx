@@ -1,30 +1,37 @@
-// app/admin/page.tsx
 "use client";
 
-import { useEffect, useState } from "react";
-import { Trash2, Pencil, PlusCircle, EyeOff, Eye, X, Plus } from "lucide-react";
-import type { DishWithRelations, CategoryWithDishes } from "@/types/menu";
+import { useState, useEffect } from "react";
+import { X, Plus, Pencil, Trash2 } from "lucide-react";
+import type { CategoryWithDishes, DishWithRelations } from "@/types/menu";
 
-// ─── Modal de modification ───────────────────────────────────────────────────
+// ─── Modal d'ajout ───────────────────────────────────────────────────────────
 
-function EditModal({
-  dish,
+function DishForm({
   categories,
+  initial,
   onClose,
   onSave,
+  mode,
 }: {
-  dish: DishWithRelations;
   categories: CategoryWithDishes[];
+  initial?: DishWithRelations;
   onClose: () => void;
-  onSave: (updated: DishWithRelations) => void;
+  onSave: (dish: DishWithRelations) => void;
+  mode: "add" | "edit";
 }) {
-  const [emoji, setEmoji] = useState(dish.emoji);
-  const [price, setPrice] = useState(dish.price);
-  const [categoryId, setCategoryId] = useState(dish.categoryId);
-  const [ingredients, setIngredients] = useState(
-    dish.ingredients.map((i) => i.name),
+  const [name, setName] = useState(initial?.name ?? "");
+  const [description, setDescription] = useState(initial?.description ?? "");
+  const [emoji, setEmoji] = useState(initial?.emoji ?? "🥘");
+  const [price, setPrice] = useState(initial?.price ?? 0);
+  const [categoryId, setCategoryId] = useState(
+    initial?.categoryId ?? categories[0]?.id ?? 1
   );
-  const [allergens, setAllergens] = useState(dish.allergens.map((a) => a.name));
+  const [ingredients, setIngredients] = useState<string[]>(
+    initial?.ingredients.map((i) => i.name) ?? []
+  );
+  const [allergens, setAllergens] = useState<string[]>(
+    initial?.allergens.map((a) => a.name) ?? []
+  );
   const [newIngredient, setNewIngredient] = useState("");
   const [newAllergen, setNewAllergen] = useState("");
   const [saving, setSaving] = useState(false);
@@ -42,36 +49,39 @@ function EditModal({
   };
 
   const handleSave = async () => {
+    if (!name.trim()) return;
     setSaving(true);
-    const updated = {
-      ...dish,
-      emoji,
-      price,
-      categoryId,
-      ingredients: ingredients.map((name, i) => ({
-        id: i,
-        name,
-        dishId: dish.id,
-      })),
-      allergens: allergens.map((name, i) => ({ id: i, name, dishId: dish.id })),
-    };
-    await fetch(`/api/dishes/${dish.id}`, {
-      method: "PUT",
+
+    const isEdit = mode === "edit" && initial;
+    const url = isEdit ? `/api/dishes/${initial.id}` : "/api/dishes";
+    const method = isEdit ? "PUT" : "POST";
+
+    const res = await fetch(url, {
+      method,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updated),
+      body: JSON.stringify({
+        name,
+        description,
+        emoji,
+        price,
+        categoryId,
+        ingredients,
+        allergens,
+      }),
     });
-    onSave(updated);
+    const dish = await res.json();
+    onSave(dish);
     setSaving(false);
     onClose();
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
-      <div className="bg-stone-900 border border-stone-700 rounded-xl w-full max-w-lg mx-4 shadow-2xl">
+      <div className="bg-stone-900 border border-stone-700 rounded-xl w-full max-w-lg mx-4 shadow-2xl max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-stone-800">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-stone-800 sticky top-0 bg-stone-900">
           <h2 className="text-white font-serif text-lg">
-            Modifier — {dish.name}
+            {mode === "add" ? "✨ Nouveau plat" : "✏️ Modifier le plat"}
           </h2>
           <button
             onClick={onClose}
@@ -83,7 +93,31 @@ function EditModal({
 
         {/* Body */}
         <div className="px-6 py-5 space-y-5">
-          {/* Emoji + Prix */}
+          <div>
+            <label className="block text-xs text-stone-400 mb-1">
+              Nom du plat *
+            </label>
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Paëlla Valenciana"
+              className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-white placeholder-stone-500 focus:outline-none focus:border-amber-600"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs text-stone-400 mb-1">
+              Description
+            </label>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="La recette originale de Valence..."
+              rows={2}
+              className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-white placeholder-stone-500 focus:outline-none focus:border-amber-600 resize-none"
+            />
+          </div>
+
           <div className="flex gap-4">
             <div className="flex-1">
               <label className="block text-xs text-stone-400 mb-1">Emoji</label>
@@ -100,6 +134,7 @@ function EditModal({
               <input
                 type="number"
                 step="0.5"
+                min="0"
                 value={price}
                 onChange={(e) => setPrice(parseFloat(e.target.value))}
                 className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-amber-600"
@@ -107,7 +142,6 @@ function EditModal({
             </div>
           </div>
 
-          {/* Catégorie */}
           <div>
             <label className="block text-xs text-stone-400 mb-1">
               Catégorie
@@ -207,7 +241,7 @@ function EditModal({
         </div>
 
         {/* Footer */}
-        <div className="flex justify-end gap-3 px-6 py-4 border-t border-stone-800">
+        <div className="flex justify-end gap-3 px-6 py-4 border-t border-stone-800 sticky bottom-0 bg-stone-900">
           <button
             onClick={onClose}
             className="px-4 py-2 text-sm text-stone-400 hover:text-white border border-stone-700 rounded-lg transition"
@@ -216,10 +250,14 @@ function EditModal({
           </button>
           <button
             onClick={handleSave}
-            disabled={saving}
+            disabled={saving || !name.trim()}
             className="px-4 py-2 text-sm bg-amber-600 hover:bg-amber-500 disabled:opacity-50 text-white rounded-lg transition font-medium"
           >
-            {saving ? "Enregistrement..." : "Enregistrer"}
+            {saving
+              ? "Enregistrement..."
+              : mode === "add"
+              ? "Ajouter le plat"
+              : "Enregistrer"}
           </button>
         </div>
       </div>
@@ -227,123 +265,165 @@ function EditModal({
   );
 }
 
-// ─── Page principale ─────────────────────────────────────────────────────────
+// ─── Page admin ───────────────────────────────────────────────────────────────
 
 export default function AdminPage() {
   const [categories, setCategories] = useState<CategoryWithDishes[]>([]);
-  const [editingDish, setEditingDish] = useState<DishWithRelations | null>(
-    null,
-  );
+  const [dishes, setDishes] = useState<DishWithRelations[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showAdd, setShowAdd] = useState(false);
+  const [editDish, setEditDish] = useState<DishWithRelations | null>(null);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
 
+  // Chargement initial
   useEffect(() => {
     fetch("/api/dishes")
       .then((r) => r.json())
-      .then(setCategories);
+      .then((data: CategoryWithDishes[]) => {
+        setCategories(data);
+        setDishes(data.flatMap((cat) => cat.dishes));
+        setLoading(false);
+      });
   }, []);
 
-  const toggleAvailable = async (dish: DishWithRelations) => {
-    await fetch(`/api/dishes/${dish.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...dish, available: !dish.available }),
-    });
-    setCategories((prev) =>
-      prev.map((cat) => ({
-        ...cat,
-        dishes: cat.dishes.map((d) =>
-          d.id === dish.id ? { ...d, available: !d.available } : d,
-        ),
-      })),
-    );
+  const handleAdd = (dish: DishWithRelations) => {
+    setDishes((prev) => [...prev, dish]);
   };
 
-  const deleteDish = async (id: number) => {
+  const handleEdit = (updated: DishWithRelations) => {
+    setDishes((prev) => prev.map((d) => (d.id === updated.id ? updated : d)));
+  };
+
+  const handleDelete = async (id: number) => {
     if (!confirm("Supprimer ce plat ?")) return;
+    setDeletingId(id);
     await fetch(`/api/dishes/${id}`, { method: "DELETE" });
-    setCategories((prev) =>
-      prev.map((cat) => ({
-        ...cat,
-        dishes: cat.dishes.filter((d) => d.id !== id),
-      })),
-    );
+    setDishes((prev) => prev.filter((d) => d.id !== id));
+    setDeletingId(null);
   };
 
-  const handleSave = (updated: DishWithRelations) => {
-    setCategories((prev) =>
-      prev.map((cat) => ({
-        ...cat,
-        dishes: cat.dishes.map((d) => (d.id === updated.id ? updated : d)),
-      })),
-    );
-  };
+  // Regrouper par catégorie pour l'affichage
+  const dishesByCategory = categories.map((cat) => ({
+    ...cat,
+    dishes: dishes.filter((d) => d.categoryId === cat.id),
+  }));
 
   return (
-    <main className="min-h-screen bg-stone-950 text-stone-200 p-8">
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-serif text-white">
-          🔧 Administration du menu
-        </h1>
-        <button className="flex items-center gap-2 px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-lg transition text-sm font-medium">
-          <PlusCircle size={18} />
-          Ajouter un plat
-        </button>
+    <main className="min-h-screen bg-stone-950 text-white p-8">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-2xl font-serif text-amber-400">Administration</h1>
+          <button
+            onClick={() => setShowAdd(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-lg transition text-sm font-medium"
+          >
+            <Plus size={16} />
+            Nouveau plat
+          </button>
+        </div>
+
+        {/* Contenu */}
+        {loading ? (
+          <p className="text-stone-500 text-sm">Chargement...</p>
+        ) : dishes.length === 0 ? (
+          <p className="text-stone-500 text-sm">
+            Aucun plat. Ajoutez-en un !
+          </p>
+        ) : (
+          <div className="space-y-8">
+            {dishesByCategory.map((cat) =>
+              cat.dishes.length === 0 ? null : (
+                <section key={cat.id}>
+                  <h2 className="text-xs font-semibold uppercase tracking-widest text-stone-500 mb-3">
+                    {cat.label}
+                  </h2>
+                  <div className="space-y-2">
+                    {cat.dishes.map((dish) => (
+                      <div
+                        key={dish.id}
+                        className="flex items-center gap-4 bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 hover:border-stone-700 transition group"
+                      >
+                        {/* Emoji */}
+                        <span className="text-2xl w-8 text-center shrink-0">
+                          {dish.emoji}
+                        </span>
+
+                        {/* Infos */}
+                        <div className="flex-1 min-w-0">
+                          <p className="text-white font-medium truncate">
+                            {dish.name}
+                          </p>
+                          {dish.description && (
+                            <p className="text-stone-500 text-xs truncate">
+                              {dish.description}
+                            </p>
+                          )}
+                          {dish.ingredients.length > 0 && (
+                            <div className="flex flex-wrap gap-1 mt-1">
+                              {dish.ingredients.map((ing) => (
+                                <span
+                                  key={ing.id}
+                                  className="text-xs text-stone-400 bg-stone-800 px-1.5 py-0.5 rounded"
+                                >
+                                  {ing.name}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Prix */}
+                        <span className="text-amber-400 font-medium text-sm shrink-0">
+                          {dish.price.toFixed(2)} €
+                        </span>
+
+                        {/* Actions */}
+                        <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition shrink-0">
+                          <button
+                            onClick={() => setEditDish(dish)}
+                            className="p-1.5 rounded-lg text-stone-400 hover:text-amber-400 hover:bg-stone-800 transition"
+                            title="Modifier"
+                          >
+                            <Pencil size={15} />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(dish.id)}
+                            disabled={deletingId === dish.id}
+                            className="p-1.5 rounded-lg text-stone-400 hover:text-red-400 hover:bg-stone-800 transition disabled:opacity-50"
+                            title="Supprimer"
+                          >
+                            <Trash2 size={15} />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )
+            )}
+          </div>
+        )}
       </div>
 
-      {categories.map((cat) => (
-        <section key={cat.id} className="mb-10">
-          <h2 className="text-lg text-amber-500 font-bold mb-4 border-b border-stone-800 pb-2">
-            {cat.label}
-          </h2>
-          <div className="space-y-3">
-            {cat.dishes.map((dish) => (
-              <div
-                key={dish.id}
-                className="flex items-center justify-between bg-stone-900 border border-stone-800 rounded-lg px-4 py-3"
-              >
-                <div className="flex items-center gap-2">
-                  <span>{dish.emoji}</span>
-                  <span className="font-medium text-white">{dish.name}</span>
-                  <span className="text-amber-500 text-sm">{dish.price} €</span>
-                  {!dish.available && (
-                    <span className="text-xs text-red-500 italic">masqué</span>
-                  )}
-                </div>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => toggleAvailable(dish)}
-                    title={dish.available ? "Masquer" : "Afficher"}
-                    className="p-2 rounded border border-stone-700 hover:border-amber-600 text-stone-400 hover:text-amber-500 transition"
-                  >
-                    {dish.available ? <EyeOff size={16} /> : <Eye size={16} />}
-                  </button>
-                  <button
-                    onClick={() => setEditingDish(dish)}
-                    title="Modifier"
-                    className="p-2 rounded border border-stone-700 hover:border-blue-600 text-stone-400 hover:text-blue-400 transition"
-                  >
-                    <Pencil size={16} />
-                  </button>
-                  <button
-                    onClick={() => deleteDish(dish.id)}
-                    title="Supprimer"
-                    className="p-2 rounded border border-red-900 text-red-500 hover:bg-red-950 transition"
-                  >
-                    <Trash2 size={16} />
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      ))}
-
-      {/* Modal */}
-      {editingDish && (
-        <EditModal
-          dish={editingDish}
+      {/* Modal ajout */}
+      {showAdd && (
+        <DishForm
+          mode="add"
           categories={categories}
-          onClose={() => setEditingDish(null)}
-          onSave={handleSave}
+          onClose={() => setShowAdd(false)}
+          onSave={handleAdd}
+        />
+      )}
+
+      {/* Modal édition */}
+      {editDish && (
+        <DishForm
+          mode="edit"
+          categories={categories}
+          initial={editDish}
+          onClose={() => setEditDish(null)}
+          onSave={handleEdit}
         />
       )}
     </main>
