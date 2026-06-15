@@ -8,8 +8,6 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -20,7 +18,47 @@
 }
 
 body {
-  background: var(--background);
+  min-height: 100vh;
+  min-width: 100vh;
+  background-image: url("/paella.jpeg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+/* @apply {
+  background: var(--background);
+} */
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #fafafa;
+}
+
+@keyframes steam-rise {
+  0% {
+    transform: translateY(20px) scaleY(0.5);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-16px) scaleY(1.4);
+    opacity: 0;
+  }
+}
+
+.steam-particle {
+  width: 6px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  animation: steam-rise 2.5s ease-out infinite;
 }
