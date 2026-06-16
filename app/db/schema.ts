@@ -24,7 +24,6 @@ export const dishes = pgTable("dishes", {
   name: text("name").notNull(),
   description: text("description").notNull(),
   price: real("price").notNull(),
-  emoji: text("emoji").notNull().default("🥘"),
   featured: boolean("featured").notNull().default(false), // mis en avant (colonne centre)
   available: boolean("available").notNull().default(true), // visible sur le menu
   position: integer("position").notNull().default(0), // ordre d'affichage

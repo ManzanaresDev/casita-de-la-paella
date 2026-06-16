@@ -10,6 +10,11 @@ const sql = neon(process.env.DATABASE_URL!);
 const db = drizzle(sql, { schema });
 
 async function main() {
+  // Drop tables existantes
+  await db.delete(schema.allergens);
+  await db.delete(schema.ingredients);
+  await db.delete(schema.dishes);
+  await db.delete(schema.categories);
   // Créer les catégories
   const [classiques, specialites, accompagnements] = await db
     .insert(schema.categories)
@@ -21,54 +26,104 @@ async function main() {
     .returning();
 
   // Créer les plats
-  const [valenciana, fruits, aioli] = await db
+  // db/seed.ts — ajout dans le bloc dishes
+  const [
+    arrozBogavante,
+    arrozNegro,
+    arrozBanda,
+    arrozCostra,
+    paellaRoyale,
+    alioli,
+  ] = await db
     .insert(schema.dishes)
     .values([
       {
-        name: "Valenciana",
+        name: "Arroz con bogavante",
         description:
-          "Poulet fermier, lapin, haricots plats, safran en pistils, cuit au feu de bois.",
-        price: 14,
-        emoji: "🥘",
-        position: 0,
-        categoryId: classiques.id,
-      },
-      {
-        name: "Fruits de mer",
-        description:
-          "Crevettes royales, moules de bouchot, palourdes et encornets grillés.",
-        price: 18,
-        emoji: "🦞",
-        featured: true,
-        position: 0,
+          "Un des riz les plus populaires du littoral espagnol. Homard, crevettes et gambas, servi caldoso.",
+        price: 22,
+        position: 1,
         categoryId: specialites.id,
       },
       {
-        name: "Aïoli maison",
+        name: "Arroz negro",
         description:
-          "Monté à l'huile d'olive vierge extra, ail rose de Lautrec.",
-        price: 3,
-        emoji: "🧄",
-        position: 0,
+          "Riz noir à l'encre de seiche, sofrito, fumet de poisson maison et sélection de mollusques et fruits de mer.",
+        price: 19,
+        position: 2,
+        categoryId: classiques.id,
+      },
+      {
+        name: 'Arroz "a banda"',
+        description:
+          "Plat marin traditionnel à base de poissons de roche. Bouillon aux pommes de terre, riz sec et aïoli.",
+        price: 18,
+        position: 3,
+        categoryId: specialites.id,
+      },
+      {
+        name: "Arroz con costra",
+        description:
+          "Riz au lapin et au porc, cuit en cocotte de terre au four, nappé d'œuf battu pour une croûte dorée.",
+        price: 17,
+        position: 4,
+        categoryId: classiques.id,
+      },
+      {
+        name: "Paëlla Royale",
+        description:
+          "Paëlla généreuse aux fruits de mer, poulet et chorizo, servie avec langoustines.",
+        price: 24,
+        position: 5,
+        categoryId: classiques.id,
+      },
+      {
+        name: "Ali-oli maison",
+        description:
+          "Sauce traditionnelle à base d'ail et d'huile d'olive, idéale pour accompagner les paëllas et plats de riz.",
+        price: 2,
+        position: 1,
         categoryId: accompagnements.id,
       },
     ])
     .returning();
 
-  // Ajouter des ingrédients
+  // Ingrédients
   await db.insert(schema.ingredients).values([
-    { name: "Poulet fermier", dishId: valenciana.id },
-    { name: "Lapin", dishId: valenciana.id },
-    { name: "Safran", dishId: valenciana.id },
-    { name: "Crevettes", dishId: fruits.id },
-    { name: "Moules", dishId: fruits.id },
-    { name: "Ail rose", dishId: aioli.id },
+    { name: "Homard", dishId: arrozBogavante.id },
+    { name: "Gambas", dishId: arrozBogavante.id },
+    { name: "Encre de seiche", dishId: arrozNegro.id },
+    { name: "Calamar", dishId: arrozNegro.id },
+    { name: "Pommes de terre", dishId: arrozBanda.id },
+    { name: "Aïoli", dishId: arrozBanda.id },
+    { name: "Lapin", dishId: arrozCostra.id },
+    { name: "Porc", dishId: arrozCostra.id },
+    { name: "Œuf", dishId: arrozCostra.id },
+    { name: "Poulet (FR)", dishId: paellaRoyale.id },
+    { name: "Riz", dishId: paellaRoyale.id },
+    { name: "Oignons", dishId: paellaRoyale.id },
+    { name: "Poivrons", dishId: paellaRoyale.id },
+    { name: "Chorizo (UE)", dishId: paellaRoyale.id },
+    { name: "Petits pois", dishId: paellaRoyale.id },
+    { name: "Moules", dishId: paellaRoyale.id },
+    { name: "Calamars", dishId: paellaRoyale.id },
+    { name: "Crevettes", dishId: paellaRoyale.id },
+    { name: "Langoustines", dishId: paellaRoyale.id },
   ]);
 
-  // Ajouter des allergènes
+  // Allergènes
   await db.insert(schema.allergens).values([
-    { name: "Crustacés", dishId: fruits.id },
-    { name: "Mollusques", dishId: fruits.id },
+    { name: "Crustacés", dishId: arrozBogavante.id },
+    { name: "Mollusques", dishId: arrozNegro.id },
+    { name: "Poisson", dishId: arrozNegro.id },
+    { name: "Poisson", dishId: arrozBanda.id },
+    { name: "Œuf", dishId: arrozCostra.id },
+    { name: "Lactose", dishId: paellaRoyale.id },
+    { name: "Crustacés", dishId: paellaRoyale.id },
+    { name: "Mollusques", dishId: paellaRoyale.id },
+    { name: "Poisson", dishId: paellaRoyale.id },
+    { name: "Sulfites", dishId: paellaRoyale.id },
+    { name: "Œuf", dishId: alioli.id },
   ]);
 
   console.log("✅ Base de données initialisée !");

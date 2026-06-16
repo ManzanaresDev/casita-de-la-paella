@@ -1,9 +1,9 @@
 // app/page.tsx
+import Image from "next/image";
 import { db } from "@/app/db";
 import MenuTriptych from "@/components/MenuTriptych";
 import type { CategoryWithDishes } from "@/types/menu";
 
-// Revalide le cache toutes les 60 secondes
 export const revalidate = 60;
 
 async function getMenu(): Promise<CategoryWithDishes[]> {
@@ -25,27 +25,74 @@ async function getMenu(): Promise<CategoryWithDishes[]> {
 
 export default async function HomePage() {
   const categories = await getMenu();
+  const steamParticles = Array.from({ length: 12 }).map((_, i) => ({
+    id: i,
+    left: 20 + i * 3,
+    top: -10 - i * 2,
+    delay: i * 0.4,
+  }));
 
   return (
-    <main className="min-h-screen bg-stone-950 text-stone-200">
+    <main className="min-h-screen text-stone-200">
       {/* Header */}
-      <header className="bg-stone-950 border-b-2 border-red-800 text-center py-10">
-        <p className="text-red-600 text-xs tracking-widest uppercase mb-2">
-          Le menu
-        </p>
-        <h1 className="font-serif text-5xl text-white tracking-widest">
-          La Paëlla
-        </h1>
-        <p className="text-amber-600 text-xs tracking-[0.4em] uppercase mt-2 font-light">
-          Authentique · Artisanale · Valenciana
-        </p>
-      </header>
+      <header className="bg-linear-to-r from-stone-950 to-stone-700 border-b-2 border-red-800 py-3">
+        <div className="max-w-6xl mx-auto grid grid-cols-3 items-center px-6">
+          {/* LOGO (gauche) */}
+          <div className="flex justify-start">
+            <Image
+              src="/logo.png"
+              alt="Logo"
+              width={150}
+              height={150}
+              className="object-contain"
+              priority
+            />
+          </div>
 
+          {/* TEXTE (centre) */}
+          <div className="text-center">
+            <p className="text-red-600 text-xs tracking-widest uppercase mb-2">
+              Le menu
+            </p>
+            <h1 className="font-serif text-5xl text-white tracking-widest">
+              La Casita de la Paella
+            </h1>
+            <p className="text-amber-600 text-xs tracking-[0.4em] uppercase mt-2 font-light">
+              Authentique · Artisanale · Aicante
+            </p>
+          </div>
+
+          {/* IMAGE PAELLA + VAPEUR (droite) */}
+          <div className="relative flex justify-end">
+            <div className="relative w-40 h-40 shrink-0 pt-15">
+              <Image
+                src="/paella.png"
+                alt="Paella"
+                width={160}
+                height={160}
+                className="rounded-lg object-cover"
+                priority
+              />
+
+              {steamParticles.map((p) => (
+                <div
+                  key={p.id}
+                  className="absolute steam-particle"
+                  style={{
+                    left: `calc(50% + ${p.left - 40}px)`,
+                    top: `${p.top}px`,
+                    animationDelay: `${p.delay}s`,
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </header>
       {/* Menu triptyque */}
       <MenuTriptych categories={categories} />
-
       {/* Footer */}
-      <footer className="text-center py-8 text-stone-700 text-xs tracking-widest uppercase border-t border-stone-900 mt-8">
+      <footer className="text-center bg-linear-to-r from-stone-950 to-stone-700 border-t-2 border-red-800 py-10">
         🔥 Tout cuit au feu de bois · Fait maison · Sur commande 🔥
       </footer>
     </main>
