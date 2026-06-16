@@ -32,7 +32,6 @@ export async function POST(req: Request) {
         name: body.name,
         description: body.description,
         price: body.price,
-        emoji: body.emoji ?? "🥘",
         featured: body.featured ?? false,
         categoryId: body.categoryId,
       })
