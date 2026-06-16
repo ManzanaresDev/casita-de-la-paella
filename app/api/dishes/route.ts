@@ -23,34 +23,43 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const body = await req.json();
+  try {
+    const body = await req.json();
 
-  const [dish] = await db
-    .insert(dishes)
-    .values({
-      name: body.name,
-      description: body.description,
-      price: body.price,
-      emoji: body.emoji ?? "🥘",
-      featured: body.featured ?? false,
-      categoryId: body.categoryId,
-    })
-    .returning();
+    const [dish] = await db
+      .insert(dishes)
+      .values({
+        name: body.name,
+        description: body.description,
+        price: body.price,
+        emoji: body.emoji ?? "🥘",
+        featured: body.featured ?? false,
+        categoryId: body.categoryId,
+      })
+      .returning();
 
-  if (body.ingredients?.length) {
-    await db
-      .insert(ingredients)
-      .values(
-        body.ingredients.map((name: string) => ({ name, dishId: dish.id })),
-      );
+    if (body.ingredients?.length) {
+      await db
+        .insert(ingredients)
+        .values(
+          body.ingredients.map((name: string) => ({ name, dishId: dish.id })),
+        );
+    }
+
+    if (body.allergens?.length) {
+      await db
+        .insert(allergens)
+        .values(
+          body.allergens.map((name: string) => ({ name, dishId: dish.id })),
+        );
+    }
+
+    return NextResponse.json(dish, { status: 201 });
+  } catch (error) {
+    console.error("POST /api/dishes error:", error);
+    return NextResponse.json(
+      { error: "Failed to create dish" },
+      { status: 500 },
+    );
   }
-  if (body.allergens?.length) {
-    await db
-      .insert(allergens)
-      .values(
-        body.allergens.map((name: string) => ({ name, dishId: dish.id })),
-      );
-  }
-
-  return NextResponse.json(dish, { status: 201 });
 }

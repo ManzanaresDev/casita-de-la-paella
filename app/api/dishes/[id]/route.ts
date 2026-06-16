@@ -3,39 +3,23 @@ import { db } from "@/app/db";
 import { dishes } from "@/app/db/schema";
 import { eq } from "drizzle-orm";
 
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: { id: string } },
-) {
-  const body = await req.json();
-  const id = parseInt(params.id);
+type Context = {
+  params: Promise<{ id: string }>;
+};
 
-  const [dish] = await db
-    .update(dishes)
-    .set({
-      name: body.name,
-      description: body.description,
-      price: body.price,
-      emoji: body.emoji,
-      available: body.available,
-      featured: body.featured,
-      updatedAt: new Date(),
-    })
-    .where(eq(dishes.id, id))
-    .returning();
+export async function PUT(req: NextRequest, context: Context) {
+  const { id } = await context.params;
 
-  return NextResponse.json(dish);
+  return NextResponse.json({
+    message: "ok",
+    id,
+  });
 }
 
-export async function DELETE(
-  _: NextRequest,
-  { params }: { params: { id: string } },
-) {
-  const id = parseInt(params.id);
+export async function DELETE(_: NextRequest, context: Context) {
+  const { id } = await context.params;
 
-  // Le CASCADE défini dans le schéma supprime automatiquement
-  // les ingredients et allergens liés à ce plat.
-  await db.delete(dishes).where(eq(dishes.id, id));
+  await db.delete(dishes).where(eq(dishes.id, Number(id)));
 
   return NextResponse.json({ deleted: true });
 }
