@@ -34,9 +34,61 @@ export default async function HomePage() {
 
   return (
     <main className="min-h-screen text-stone-200">
-      {/* Header */}
+      {/* HEADER */}
       <header className="bg-linear-to-r from-stone-950 to-stone-700 border-b-2 border-red-800 py-3">
-        <div className="max-w-6xl mx-auto grid grid-cols-3 items-center px-6">
+        {/* mobile */}
+        <div className="relative md:hidden overflow-hidden py-4 px-4 min-h-[120px]">
+          {/* HEADER LEFT */}
+          <div className="flex items-center gap-3 relative z-10">
+            <Image
+              src="/logo.png"
+              alt="Logo"
+              width={45}
+              height={45}
+              className="object-contain shrink-0"
+              priority
+            />
+
+            <div>
+              <h1 className="font-serif text-3xl text-white leading-tight">
+                La Casita de la Paella
+              </h1>
+
+              <p className="text-amber-600 text-[10px] tracking-[0.3em] uppercase mt-1">
+                Authentique · Artisanale · Alicante
+              </p>
+            </div>
+          </div>
+
+          {/* PAELLA */}
+          <div className="absolute right-0 top-1/2 translate-y-1 translate-x-2 z-0">
+            <div className="relative w-44 h-44">
+              <Image
+                src="/paella.png"
+                alt="Paella"
+                width={160}
+                height={160}
+                className="object-contain"
+                priority
+              />
+
+              {steamParticles.map((p) => (
+                <div
+                  key={p.id}
+                  className="absolute steam-particle"
+                  style={{
+                    left: `calc(50% + ${p.left - 40}px)`,
+                    top: `${p.top}px`,
+                    animationDelay: `${p.delay}s`,
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* desktop */}
+        <div className="hidden md:grid max-w-6xl mx-auto grid-cols-3 items-center px-6">
           {/* LOGO (gauche) */}
           <div className="flex justify-start">
             <Image
@@ -51,7 +103,7 @@ export default async function HomePage() {
 
           {/* TEXTE (centre) */}
           <div className="text-center">
-            <p className="text-red-600 text-xs tracking-widest uppercase mb-2">
+            <p className="hidden md:block text-red-600 text-xs tracking-widest uppercase mb-2">
               Le menu
             </p>
             <h1 className="font-serif text-5xl text-white tracking-widest">
