@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/app/db";
 import { dishes, ingredients, allergens } from "@/app/db/schema";
-import { eq } from "drizzle-orm";
 
 export async function GET() {
   // Drizzle Relational Query — récupère tout en une seule passe
