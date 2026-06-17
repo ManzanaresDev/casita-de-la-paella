@@ -352,7 +352,7 @@ export default function MobileMenuShell({ categories, steamParticles }: Props) {
                   className="text-center text-xs tracking-widest uppercase"
                   style={{ color: "#57534e" }}
                 >
-                  🔥 Fait maison · Cuit au feu de bois
+                  Cuisine espagnole · Fait maison
                 </p>
               </div>
             </div>
