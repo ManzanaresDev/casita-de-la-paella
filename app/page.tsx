@@ -44,7 +44,7 @@ export default function HeroPage() {
     flex flex-col items-center gap-3
   `}
       >
-        Pour tous moments coviviales
+        Pour tous moments conviviaux
         <br></br> la cuisine espagnole retre chez vous...
         <Image
           src="/images/spain.png"
