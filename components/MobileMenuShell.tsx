@@ -64,32 +64,24 @@ export default function MobileMenuShell({ categories, steamParticles }: Props) {
           <span className="block w-6 h-0.5 bg-stone-300" />
         </button>
 
-        {/* Logo + nom */}
+        {/* nom + Logo */}
         <div className="flex items-center gap-2">
-          <Image
-            src="/images/logo.png"
-            alt="La Casita de la Paella"
-            width={40}
-            height={40}
-            className="object-contain"
-            priority
-          />
           <div className="text-left">
-            <p className="text-red-600 text-[10px] tracking-widest uppercase leading-none mb-0.5">
-              Le menu
-            </p>
             <h1 className="font-serif text-white text-sm leading-tight">
               La Casita de la Paella
             </h1>
+            <p className="text-red-600 text-[10px] tracking-widest uppercase leading-none mb-0.5">
+              Le menu
+            </p>
           </div>
         </div>
 
-        {/* Drapeau */}
+        {/* logo */}
         <Image
-          src="/images/spain.png"
+          src="/images/logo.png"
           alt="Espagne"
-          width={28}
-          height={28}
+          width={60}
+          height={60}
           className="object-contain"
         />
       </header>
