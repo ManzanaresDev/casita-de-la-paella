@@ -1,3 +1,13 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "La Carte – La Casita de la Paella",
+  alternates: { canonical: "/accueil" },
+  openGraph: {
+    url: "https://casita-de-la-paella.vercel.app/accueil",
+  },
+};
+
 export default function BasiqueLayout({
   children,
 }: {

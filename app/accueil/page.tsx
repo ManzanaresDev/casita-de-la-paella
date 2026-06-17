@@ -1,4 +1,4 @@
-// app/page.tsx
+// app/accueil/page.tsx
 import Image from "next/image";
 import { db } from "@/app/db";
 import MenuTriptych from "@/components/MenuTriptych";
@@ -37,7 +37,10 @@ export default async function AccueilPage() {
     <>
       {/* ── MOBILE ── */}
       <div className="md:hidden bg-linear-to-r from-stone-950 to-stone-700 border-b-2 text-stone-200 border-red-800">
-        <MobileMenuShell categories={categories} steamParticles={steamParticles} />
+        <MobileMenuShell
+          categories={categories}
+          steamParticles={steamParticles}
+        />
       </div>
 
       {/* ── DESKTOP HEADER ── */}
@@ -63,7 +66,7 @@ export default async function AccueilPage() {
               La Casita de la Paella
             </h1>
             <p className="text-amber-600 text-xs tracking-[0.4em] uppercase mt-2 font-light">
-              Authentique · Artisanale · Alicante
+              Authentique · Artisanale · Espagne
             </p>
           </div>
           {/* PAELLA */}

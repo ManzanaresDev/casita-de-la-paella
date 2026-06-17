@@ -14,31 +14,55 @@ const lato = Lato({
 });
 
 export const metadata: Metadata = {
-  title: "La caita de la paella",
-  description: "Commande et livraison de paellas à domicile et reunions",
-  keywords: [],
+  title: "La Casita de la Paella – Paëlla artisanale cuite au feu de bois",
+  description:
+    "Commandez votre paëlla artisanale à Dunkerque : valencienne, fruits de mer ou mixte, cuisinée au feu de bois et livrée à domicile ou pour vos événements.",
+  keywords: [
+    "paella",
+    "paella Dunkerque",
+    "paella artisanale",
+    "paella feu de bois",
+    "paella à domicile",
+    "paella sur commande",
+    "paella valencienne",
+    "paella fruits de mer",
+    "traiteur espagnol Dunkerque",
+    "paella événement",
+    "paella mariage",
+    "cuisine espagnole",
+    "la casita de la paella",
+    "paella Nord",
+    "paella fait maison",
+  ],
   authors: [{ name: "Manzanares Marcos" }],
   creator: "Manzanares Marcos",
-  publisher: "La casita de la paella",
+  publisher: "La Casita de la Paella",
   metadataBase: new URL("https://casita-de-la-paella.vercel.app/"),
   alternates: { canonical: "/" },
   openGraph: {
-    title: "La casita de la paella",
-    description: "Commande et livraison de paellas à domicile et reunions",
+    title: "La Casita de la Paella – Paëlla artisanale cuite au feu de bois",
+    description:
+      "Commandez votre paëlla artisanale à Dunkerque : valencienne, fruits de mer ou mixte, cuisinée au feu de bois et livrée à domicile ou pour vos événements.",
     url: "https://casita-de-la-paella.vercel.app/",
-    siteName: "La casita de la paella",
+    siteName: "La Casita de la Paella",
     locale: "fr_FR",
     type: "website",
     images: [
       {
-        url: "images/og-image.jpg",
-        width: 60,
-        height: 60,
-        alt: "La casita de la paella",
+        url: "/images/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "La Casita de la Paella – paëlla artisanale cuite au feu de bois à Dunkerque",
       },
     ],
   },
-  // twitter: {},
+  twitter: {
+    card: "summary_large_image",
+    title: "La Casita de la Paella – Paëlla artisanale à Dunkerque",
+    description:
+      "Paëlla valencienne, fruits de mer ou mixte, cuisinée au feu de bois. Livraison à domicile et sur événements.",
+    images: ["/images/og-image.jpg"],
+  },
   robots: {
     index: true,
     follow: true,

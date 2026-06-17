@@ -1,3 +1,4 @@
+// app/page.tsx
 "use client";
 
 import Image from "next/image";
@@ -45,7 +46,7 @@ export default function HeroPage() {
   `}
       >
         Pour tous moments conviviaux
-        <br></br> la cuisine espagnole retre chez vous...
+        <br></br> la cuisine espagnole entre chez vous...
         <Image
           src="/images/spain.png"
           alt="drapeau Espagne"
