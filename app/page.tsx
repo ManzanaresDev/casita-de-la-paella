@@ -17,7 +17,7 @@ export default function HeroPage() {
   }, []);
 
   return (
-    <div className="z-10 text-center flex flex-col items-center justify-center  min-h-screen">
+    <div className="z-10 text-center flex flex-col items-center justify-center min-h-screen bg-black">
       <Link href="/accueil" className="inline-block">
         <div
           className={`

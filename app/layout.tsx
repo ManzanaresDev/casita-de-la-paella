@@ -59,11 +59,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr" className={`${playfair.variable} ${lato.variable}`}>
-      <body className="font-lato">
-        <main className="w-full min-h-screen bg-black flex items-center justify-center px-4">
-          {children}
-        </main>
-      </body>
+      <body className="font-lato">{children}</body>
     </html>
   );
 }

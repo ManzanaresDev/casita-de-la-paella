@@ -40,14 +40,14 @@ export default async function AccueilPage() {
         <div className="relative md:hidden overflow-hidden py-4 px-4 min-h-30">
           {/* HEADER LEFT */}
           <div className="flex items-center gap-3 relative z-10">
-            <Image
-              src="/logo.png"
+            {/* <Image
+              src="/images/logo.png"
               alt="Logo"
               width={45}
               height={45}
               className="object-contain shrink-0"
               priority
-            />
+            /> */}
 
             <div>
               <h1 className="font-serif text-3xl text-white leading-tight">
