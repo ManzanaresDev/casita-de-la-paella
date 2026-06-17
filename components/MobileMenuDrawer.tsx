@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import type { CategoryWithDishes } from "@/types/menu";
 
 interface Props {
@@ -52,6 +53,13 @@ export default function MobileMenuDrawer({ categories }: Props) {
           <span className="text-amber-600 text-xs tracking-[0.3em] uppercase font-light">
             La Carte
           </span>
+          <Image
+            src="/images/spain.png"
+            alt="drapeau Espagne"
+            width={40}
+            height={40}
+            className="object-contain"
+          />
           <button
             onClick={() => setOpen(false)}
             aria-label="Fermer"
