@@ -200,7 +200,7 @@ export default function MobileMenuShell({ categories, steamParticles }: Props) {
         {/* Footer drawer */}
         <div className="px-5 py-4 border-t border-stone-800">
           <p className="text-stone-600 text-[10px] tracking-widest uppercase text-center">
-            🔥 Fait maison · Cuit au feu de bois
+            Cuisine espagnole · Fait maison
           </p>
         </div>
       </div>
