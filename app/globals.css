@@ -16,18 +16,15 @@
     --foreground: #ededed;
   }
 }
-
+html,
+body {
+  height: 100%;
+}
 body {
   margin: 0;
+  padding: 0;
   min-height: 100vh;
-  background-image: url("/fond.jpg");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-  display: flex;
-  flex-direction: column;
+  min-width: 100vw;
 }
 
 /* ===== vapeur réaliste ===== */
@@ -81,4 +78,66 @@ body {
 }
 .steam-particle:nth-child(6) {
   animation-delay: 5s;
+}
+
+/* STEAM HERO */
+.steam {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.steam span {
+  position: absolute;
+  bottom: -150px;
+  width: 60px;
+  height: 120px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.05) 60%,
+    transparent 100%
+  );
+  filter: blur(15px);
+  animation: rise 8s infinite ease-in;
+  opacity: 0.3;
+  border-radius: 50%;
+}
+
+@keyframes rise {
+  0% {
+    transform: translateY(0) scale(0.8);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.4;
+  }
+  100% {
+    transform: translateY(-900px) scale(1.4);
+    opacity: 0;
+  }
+}
+
+.steam span:nth-child(1) {
+  left: 10%;
+  animation-delay: 0s;
+}
+.steam span:nth-child(2) {
+  left: 25%;
+  animation-delay: 3s;
+}
+.steam span:nth-child(3) {
+  left: 50%;
+  animation-delay: 4s;
+}
+.steam span:nth-child(4) {
+  left: 70%;
+  animation-delay: 1s;
+}
+.steam span:nth-child(5) {
+  left: 85%;
+  animation-delay: 3s;
 }
