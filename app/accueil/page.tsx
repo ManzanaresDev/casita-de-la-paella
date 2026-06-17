@@ -99,8 +99,8 @@ export default async function AccueilPage() {
       </div>
 
       {/* Footer */}
-      <footer className="text-center bg-linear-to-r from-stone-950 to-stone-700 border-t-2 border-red-800 py-10">
-        🔥 Tout cuit au feu de bois · Fait maison · Sur commande 🔥
+      <footer className="text-center bg-linear-to-r from-stone-950 to-stone-700 border-t-2 border-red-800 py-10 text-white">
+        Fait maison · Sur commande
       </footer>
     </>
   );
