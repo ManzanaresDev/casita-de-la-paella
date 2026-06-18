@@ -1,11 +1,11 @@
 // app/api/auth/login/route.ts
 import bcrypt from "bcryptjs";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import { sql } from "@/lib/db";
 import { COOKIE_NAME, signToken } from "@/lib/auth";
 
-export async function POST(request: NextResponse) {
+export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const identifiant = body.identifiant?.trim();
