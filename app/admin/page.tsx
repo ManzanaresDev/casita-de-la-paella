@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, Pencil, Trash2 } from "lucide-react";
+import { Plus, Pencil, Trash2, LogOut } from "lucide-react";
 import type { CategoryWithDishes, DishWithRelations } from "@/types/menu";
 
 export default function AdminPage() {
@@ -31,6 +31,12 @@ export default function AdminPage() {
     setDeletingId(null);
   };
 
+  async function logout() {
+    await fetch("/api/auth/logout", { method: "POST" });
+    router.push("/login");
+    router.refresh();
+  }
+
   const dishesByCategory = categories.map((cat) => ({
     ...cat,
     dishes: dishes.filter((d) => d.categoryId === cat.id),
@@ -40,7 +46,18 @@ export default function AdminPage() {
     <main className="min-h-screen bg-stone-950 text-white p-8">
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-2xl font-serif text-amber-400">Administration</h1>
+          <div className="flex flex-col gap-2">
+            <h1 className="text-2xl font-serif text-amber-400">
+              Administration
+            </h1>
+            <button
+              onClick={logout}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-stone-800 hover:bg-red-900/40 text-stone-400 hover:text-red-400 border border-stone-700 hover:border-red-800 transition text-xs font-medium w-fit"
+            >
+              <LogOut size={13} />
+              Déconnexion
+            </button>
+          </div>
           <button
             onClick={() => router.push("/admin/dishes/new")}
             className="flex items-center gap-2 px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-lg transition text-sm font-medium"
