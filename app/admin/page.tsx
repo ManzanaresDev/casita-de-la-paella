@@ -112,7 +112,7 @@ export default function AdminPage() {
                           {dish.price.toFixed(2)} €
                         </span>
 
-                        <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition shrink-0">
+                        <div className="flex gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition shrink-0">
                           <button
                             onClick={() =>
                               router.push(`/admin/dishes/${dish.id}/edit`)
