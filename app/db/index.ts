@@ -1,11 +1,13 @@
 // db/index.ts
-import { neon } from "@neondatabase/serverless";
-import { drizzle } from "drizzle-orm/neon-http";
+import { Pool, neonConfig } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-serverless";
+import ws from "ws";
 import * as schema from "./schema";
 
-// neon() crée un client HTTP léger, idéal pour le serverless.
-// Chaque requête est une simple requête HTTPS vers l'API Neon —
-// pas de connexion persistante, pas de pool à gérer.
-const sql = neon(process.env.DATABASE_URL!);
+// Le driver Pool (via WebSocket) supporte les transactions interactives,
+// contrairement au client HTTP léger neon().
+neonConfig.webSocketConstructor = ws;
 
-export const db = drizzle(sql, { schema });
+const pool = new Pool({ connectionString: process.env.DATABASE_URL! });
+
+export const db = drizzle(pool, { schema });

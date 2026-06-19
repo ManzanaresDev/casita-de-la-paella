@@ -64,6 +64,7 @@ export const dishesRelations = relations(dishes, ({ one, many }) => ({
   }),
   ingredients: many(ingredients),
   allergens: many(allergens),
+  images: many(dishImages), // ← ajoute cette ligne
 }));
 
 export const ingredientsRelations = relations(ingredients, ({ one }) => ({
@@ -72,4 +73,22 @@ export const ingredientsRelations = relations(ingredients, ({ one }) => ({
 
 export const allergensRelations = relations(allergens, ({ one }) => ({
   dish: one(dishes, { fields: [allergens.dishId], references: [dishes.id] }),
+}));
+
+export const dishImages = pgTable("dish_images", {
+  id: serial("id").primaryKey(),
+  dishId: integer("dish_id")
+    .notNull()
+    .references(() => dishes.id, { onDelete: "cascade" }),
+  url: text("url").notNull(),
+  publicId: text("public_id").notNull(),
+  position: integer("position").notNull().default(0),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const dishImagesRelations = relations(dishImages, ({ one }) => ({
+  dish: one(dishes, {
+    fields: [dishImages.dishId],
+    references: [dishes.id],
+  }),
 }));

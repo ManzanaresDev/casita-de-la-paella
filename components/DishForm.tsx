@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { X } from "lucide-react";
 import type { DishWithRelations } from "@/types/menu";
 import ComboboxTag from "./ComboboxTag";
+import MultiImageUploader, { DishImage } from "@/components/MultiImageUploader";
 
 interface CategoryOption {
   id: number;
@@ -42,6 +43,13 @@ export default function DishForm({
   );
   const [saving, setSaving] = useState(false);
 
+  const [images, setImages] = useState<DishImage[]>(
+    initial?.images?.map((img) => ({
+      url: img.url,
+      publicId: img.publicId,
+    })) ?? [],
+  );
+
   const handleSave = async () => {
     if (!name.trim()) return;
     setSaving(true);
@@ -60,6 +68,7 @@ export default function DishForm({
         categoryId,
         ingredients,
         allergens,
+        images,
       }),
     });
 
@@ -143,6 +152,7 @@ export default function DishForm({
               ))}
             </select>
           </div>
+          <MultiImageUploader images={images} onChange={setImages} />
 
           <div>
             {/* Ingrédients */}

@@ -17,7 +17,7 @@ export default async function EditDishPage({ params }: Props) {
     await Promise.all([
       db.query.dishes.findFirst({
         where: eq(dishes.id, dishId),
-        with: { ingredients: true, allergens: true },
+        with: { ingredients: true, allergens: true, images: true }, // ← ajout
       }),
       db.query.categories.findMany({
         orderBy: (c, { asc }) => [asc(c.position)],

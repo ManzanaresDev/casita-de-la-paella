@@ -4,6 +4,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import type { CategoryWithDishes, DishWithRelations } from "@/types/menu";
+import DishImageCarousel from "./DishImageCarousel";
 
 interface Props {
   categories: CategoryWithDishes[];
@@ -100,7 +101,7 @@ export default function MenuTriptych({ categories }: Props) {
             onClick={closeModal}
           >
             <div
-              className="relative w-full max-w-lg rounded-2xl overflow-hidden flex flex-col max-h-[85vh]"
+              className="relative w-full max-w-3xl rounded-2xl overflow-hidden flex flex-col max-h-[85vh]"
               style={{ backgroundColor: "#0c0a09" }}
               onClick={(e) => e.stopPropagation()}
             >
@@ -142,96 +143,116 @@ export default function MenuTriptych({ categories }: Props) {
 
               {/* Contenu scrollable */}
               <div className="flex-1 overflow-y-auto px-8 py-8">
-                <h2
-                  className="font-serif text-3xl leading-tight mb-2"
-                  style={{ color: "#fafaf9" }}
+                {/* Layout 2 colonnes en desktop si image présente */}
+                <div
+                  className={`md:flex md:gap-8 ${selectedDish.images?.length > 0 ? "" : ""}`}
                 >
-                  {selectedDish.name}
-                </h2>
+                  {/* Colonne gauche — image */}
+                  {selectedDish.images?.length > 0 && (
+                    <div className="md:w-2/5 md:shrink-0 mb-6 md:mb-0">
+                      <div className="md:sticky md:top-0">
+                        <DishImageCarousel
+                          images={selectedDish.images}
+                          alt={selectedDish.name}
+                        />
+                      </div>
+                    </div>
+                  )}
 
-                {selectedDish.price != null && (
-                  <p
-                    className="text-2xl font-light mb-8"
-                    style={{ color: "#d97706" }}
-                  >
-                    {Number(selectedDish.price).toFixed(2)} €
-                  </p>
-                )}
+                  {/* Colonne droite — infos */}
+                  <div className="flex-1 min-w-0">
+                    <h2
+                      className="font-serif text-3xl leading-tight mb-2"
+                      style={{ color: "#fafaf9" }}
+                    >
+                      {selectedDish.name}
+                    </h2>
 
-                <div className="flex items-center gap-3 mb-8">
-                  <div
-                    className="flex-1 h-px"
-                    style={{ backgroundColor: "#7f1d1d" }}
-                  />
-                  <span style={{ color: "#7f1d1d", fontSize: 18 }}>✦</span>
-                  <div
-                    className="flex-1 h-px"
-                    style={{ backgroundColor: "#7f1d1d" }}
-                  />
+                    {selectedDish.price != null && (
+                      <p
+                        className="text-2xl font-light mb-6"
+                        style={{ color: "#d97706" }}
+                      >
+                        {Number(selectedDish.price).toFixed(2)} €
+                      </p>
+                    )}
+
+                    <div className="flex items-center gap-3 mb-6">
+                      <div
+                        className="flex-1 h-px"
+                        style={{ backgroundColor: "#7f1d1d" }}
+                      />
+                      <span style={{ color: "#7f1d1d", fontSize: 18 }}>✦</span>
+                      <div
+                        className="flex-1 h-px"
+                        style={{ backgroundColor: "#7f1d1d" }}
+                      />
+                    </div>
+
+                    {selectedDish.description && (
+                      <div className="mb-6">
+                        <p
+                          className="text-base leading-relaxed"
+                          style={{ color: "#a8a29e" }}
+                        >
+                          {selectedDish.description}
+                        </p>
+                      </div>
+                    )}
+
+                    {selectedDish.ingredients?.length > 0 && (
+                      <div className="mb-6">
+                        <h3
+                          className="text-xs tracking-[0.25em] uppercase mb-3"
+                          style={{ color: "#d97706" }}
+                        >
+                          Ingrédients
+                        </h3>
+                        <div className="flex flex-wrap gap-2">
+                          {selectedDish.ingredients.map((ing) => (
+                            <span
+                              key={ing.id}
+                              className="text-sm px-3 py-1 rounded-full border"
+                              style={{
+                                color: "#d6d3d1",
+                                borderColor: "#44403c",
+                                backgroundColor: "#1c1917",
+                              }}
+                            >
+                              {ing.name}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {selectedDish.allergens?.length > 0 && (
+                      <div className="mb-6">
+                        <h3
+                          className="text-xs tracking-[0.25em] uppercase mb-3"
+                          style={{ color: "#b91c1c" }}
+                        >
+                          Allergènes
+                        </h3>
+                        <div className="flex flex-wrap gap-2">
+                          {selectedDish.allergens.map((al) => (
+                            <span
+                              key={al.id}
+                              className="text-sm px-3 py-1 rounded-full border"
+                              style={{
+                                color: "#fca5a5",
+                                borderColor: "#7f1d1d",
+                                backgroundColor: "#450a0a",
+                              }}
+                            >
+                              {al.name}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
-
-                {selectedDish.description && (
-                  <div className="mb-8">
-                    <p
-                      className="text-base leading-relaxed"
-                      style={{ color: "#a8a29e" }}
-                    >
-                      {selectedDish.description}
-                    </p>
-                  </div>
-                )}
-
-                {selectedDish.ingredients?.length > 0 && (
-                  <div className="mb-8">
-                    <h3
-                      className="text-xs tracking-[0.25em] uppercase mb-3"
-                      style={{ color: "#d97706" }}
-                    >
-                      Ingrédients
-                    </h3>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedDish.ingredients.map((ing) => (
-                        <span
-                          key={ing.id}
-                          className="text-sm px-3 py-1 rounded-full border"
-                          style={{
-                            color: "#d6d3d1",
-                            borderColor: "#44403c",
-                            backgroundColor: "#1c1917",
-                          }}
-                        >
-                          {ing.name}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {selectedDish.allergens?.length > 0 && (
-                  <div className="mb-8">
-                    <h3
-                      className="text-xs tracking-[0.25em] uppercase mb-3"
-                      style={{ color: "#b91c1c" }}
-                    >
-                      Allergènes
-                    </h3>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedDish.allergens.map((al) => (
-                        <span
-                          key={al.id}
-                          className="text-sm px-3 py-1 rounded-full border"
-                          style={{
-                            color: "#fca5a5",
-                            borderColor: "#7f1d1d",
-                            backgroundColor: "#450a0a",
-                          }}
-                        >
-                          {al.name}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
               </div>
 
               {/* Footer */}

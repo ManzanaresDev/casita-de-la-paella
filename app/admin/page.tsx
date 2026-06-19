@@ -85,6 +85,20 @@ export default function AdminPage() {
                         key={dish.id}
                         className="flex items-center gap-4 bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 hover:border-stone-700 transition group"
                       >
+                        <div className="w-14 h-14 rounded-lg overflow-hidden bg-stone-800 shrink-0">
+                          {dish.images?.[0] ? (
+                            <img
+                              src={dish.images[0].url}
+                              alt={dish.name}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-stone-600 text-[10px]">
+                              —
+                            </div>
+                          )}
+                        </div>
+
                         <div className="flex-1 min-w-0">
                           <p className="text-white font-medium truncate">
                             {dish.name}

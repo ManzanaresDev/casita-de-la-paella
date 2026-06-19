@@ -5,7 +5,7 @@ import MenuTriptych from "@/components/MenuTriptych";
 import MobileMenuShell from "@/components/MobileMenuShell";
 import type { CategoryWithDishes } from "@/types/menu";
 
-export const revalidate = 60;
+export const revalidate = 0;
 
 async function getMenu(): Promise<CategoryWithDishes[]> {
   const result = await db.query.categories.findMany({
@@ -17,6 +17,10 @@ async function getMenu(): Promise<CategoryWithDishes[]> {
         with: {
           ingredients: true,
           allergens: true,
+          images: {
+            // ← manquait ici
+            orderBy: (img, { asc }) => [asc(img.position)],
+          },
         },
       },
     },

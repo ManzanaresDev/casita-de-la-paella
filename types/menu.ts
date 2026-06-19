@@ -17,6 +17,7 @@ export type Allergen = InferSelectModel<typeof allergens>;
 export type DishWithRelations = Dish & {
   ingredients: Ingredient[];
   allergens: Allergen[];
+  images: { url: string; publicId: string }[]; // ← ajout
 };
 
 export type CategoryWithDishes = Category & {

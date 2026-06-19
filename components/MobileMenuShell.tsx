@@ -4,6 +4,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import type { CategoryWithDishes, DishWithRelations } from "@/types/menu";
+import DishImageCarousel from "./DishImageCarousel";
 
 interface SteamParticle {
   id: number;
@@ -258,6 +259,13 @@ export default function MobileMenuShell({ categories, steamParticles }: Props) {
 
               {/* Contenu scrollable */}
               <div className="flex-1 overflow-y-auto px-6 py-6">
+                {selectedDish.images?.length > 0 && (
+                  <DishImageCarousel
+                    images={selectedDish.images}
+                    alt={selectedDish.name}
+                  />
+                )}
+
                 <h2
                   className="font-serif text-3xl leading-tight mb-2"
                   style={{ color: "#fafaf9" }}
