@@ -40,15 +40,12 @@ export default async function AccueilPage() {
   return (
     <>
       {/* ── MOBILE ── */}
-      <div className="md:hidden bg-linear-to-r from-stone-950 to-stone-700 border-b-2 text-stone-200 border-red-800">
-        <MobileMenuShell
-          categories={categories}
-          steamParticles={steamParticles}
-        />
+      <div className="md:hidden border-b-2 text-stone-200 border-red-800">
+        <MobileMenuShell categories={categories} />
       </div>
 
       {/* ── DESKTOP HEADER ── */}
-      <header className="hidden md:block bg-linear-to-r from-stone-950 to-stone-700 border-b-2 text-stone-200 border-red-800 py-3">
+      <header className="hidden md:block border-b-2 text-stone-200 border-red-800 py-3">
         <div className="max-w-6xl mx-auto grid grid-cols-3 items-center px-6">
           {/* LOGO */}
           <div className="flex justify-start">
@@ -106,7 +103,7 @@ export default async function AccueilPage() {
       </div>
 
       {/* Footer */}
-      <footer className="text-center bg-linear-to-r from-stone-950 to-stone-700 border-t-2 border-red-800 py-10 text-white">
+      <footer className="text-center border-t-2 border-red-800 py-10 text-white">
         Fait maison · Sur commande
       </footer>
     </>

@@ -6,19 +6,11 @@ import Image from "next/image";
 import type { CategoryWithDishes, DishWithRelations } from "@/types/menu";
 import DishImageCarousel from "./DishImageCarousel";
 
-interface SteamParticle {
-  id: number;
-  left: number;
-  top: number;
-  delay: number;
-}
-
 interface Props {
   categories: CategoryWithDishes[];
-  steamParticles: SteamParticle[];
 }
 
-export default function MobileMenuShell({ categories, steamParticles }: Props) {
+export default function MobileMenuShell({ categories }: Props) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [activeCategoryId, setActiveCategoryId] = useState<number | null>(
     categories[0]?.id ?? null,
@@ -51,7 +43,7 @@ export default function MobileMenuShell({ categories, steamParticles }: Props) {
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-b from-stone-950 to-stone-900">
+    <div className="relative min-h-screen ">
       {/* ── HEADER ── */}
       <header className="flex items-center justify-between px-4 py-3 border-b border-red-900/40">
         {/* Burger */}
@@ -293,7 +285,7 @@ export default function MobileMenuShell({ categories, steamParticles }: Props) {
                 </div>
                 {selectedDish.description && (
                   <p
-                    className="text-base leading-relaxed mb-6"
+                    className="text-base leading-relaxed mb-6 line-clamp-2"
                     style={{ color: "#a8a29e" }}
                   >
                     {selectedDish.description}

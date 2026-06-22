@@ -19,7 +19,8 @@ export default function MenuTriptych({ categories }: Props) {
 
   const [left, center, right] = categories;
 
-  const colBase = "p-7 min-w-0";
+  // const colBase = "p-7 min-w-0";
+  const colBase = "px-5 py-4 min-w-0";
   const colVariants = [
     "border-r border-white/20",
     "border-x border-white/10 bg-white/5",
@@ -41,17 +42,17 @@ export default function MenuTriptych({ categories }: Props) {
 
   return (
     <>
-      <div className="mx-auto my-10 w-full max-w-6xl px-4">
-        <div className="grid grid-cols-3 rounded-xl bg-white/10 backdrop-blur-xs shadow-2xl overflow-hidden">
+      <div className="mx-auto my-10 w-full max-w-6xl px-4 ">
+        <div className="grid grid-cols-3">
           {[left, center, right].map((cat, idx) => (
             <div
               key={cat?.id ?? idx}
               className={`${colBase} ${colVariants[idx]}`}
             >
-              <h2 className="font-serif text-xl text-white text-center mb-1">
+              <h2 className="font-serif text-2xl text-white mb-1">
                 {cat?.label}
               </h2>
-              <div className="w-12 h-0.5 bg-red-700 mx-auto mb-6" />
+              <div className="w-10 h-0.5 bg-red-700 mt-2 mb-6" />
               {cat?.dishes.map((dish, i) => (
                 <button
                   key={dish.id}
@@ -60,7 +61,8 @@ export default function MenuTriptych({ categories }: Props) {
                   style={{ animationDelay: `${i * 100}ms` }}
                 >
                   <div className="flex items-baseline justify-between gap-3">
-                    <h3 className="font-serif text-sm italic text-yellow-100 leading-snug flex-1 group-hover:text-amber-400 transition-colors">
+                    {/* Nom du plat — text-sm → text-base */}
+                    <h3 className="font-serif text-base italic text-yellow-100 leading-snug flex-1 group-hover:text-amber-400 transition-colors">
                       {dish.name}
                     </h3>
                     <span className="bg-yellow-100 text-red-800 text-[11px] font-bold whitespace-nowrap px-1.5 py-0.5 rounded-sm shrink-0">
@@ -69,7 +71,7 @@ export default function MenuTriptych({ categories }: Props) {
                   </div>
                   {/* Description courte uniquement — le modal donne le détail complet */}
                   {dish.description && (
-                    <p className="text-white/60 text-[11px] mt-1.5 leading-relaxed font-sans line-clamp-2">
+                    <p className="text-white/60 text-[11px] mt-1.5 leading-relaxed font-sans">
                       {dish.description}
                     </p>
                   )}

@@ -15,12 +15,14 @@ export default function BasiqueLayout({
 }) {
   return (
     <main
-      className="min-h-screen w-full flex flex-col  overflow-x-hidden"
+      className="min-h-screen w-full flex flex-col  overflow-x-hidden bg-black"
       style={{
-        backgroundImage: 'url("/images/fond.jpg")',
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
+        background:
+          "linear-gradient(to right, rgb(12, 10, 9), rgb(68, 64, 60))",
+        //   backgroundImage: 'url("/images/fond.jpg")',
+        //   backgroundPosition: "center",
+        //   backgroundRepeat: "no-repeat",
+        //   backgroundSize: "cover",
       }}
     >
       {children}
