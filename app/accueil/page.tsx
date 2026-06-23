@@ -4,6 +4,7 @@ import { db } from "@/app/db";
 import MenuTriptych from "@/components/MenuTriptych";
 import MobileMenuShell from "@/components/MobileMenuShell";
 import type { CategoryWithDishes } from "@/types/menu";
+import WhatsappContact from "@/components/WhatsappContact";
 
 export const revalidate = 0;
 
@@ -57,6 +58,7 @@ export default async function AccueilPage() {
               className="object-contain"
               priority
             />
+            {/* <WhatsappContact /> */}
           </div>
           {/* TEXTE */}
           <div className="text-center">

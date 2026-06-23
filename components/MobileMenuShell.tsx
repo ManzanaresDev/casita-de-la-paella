@@ -5,6 +5,7 @@ import { useState } from "react";
 import Image from "next/image";
 import type { CategoryWithDishes, DishWithRelations } from "@/types/menu";
 import DishImageCarousel from "./DishImageCarousel";
+import WhatsappContact from "@/components/WhatsappContact";
 
 interface Props {
   categories: CategoryWithDishes[];
@@ -45,7 +46,7 @@ export default function MobileMenuShell({ categories }: Props) {
   return (
     <div className="relative min-h-screen ">
       {/* ── HEADER ── */}
-      <header className="flex items-center justify-between px-4 py-3 border-b border-red-900/40">
+      <header className="flex items-center gap-15 px-4 py-3 border-b border-red-900/40">
         {/* Burger */}
         <button
           onClick={() => setDrawerOpen(true)}
@@ -57,26 +58,28 @@ export default function MobileMenuShell({ categories }: Props) {
           <span className="block w-6 h-0.5 bg-stone-300" />
         </button>
 
-        {/* nom + Logo */}
-        <div className="flex items-center gap-2">
+        {/* Logo + nom */}
+        <div className="flex justify-start items-center gap-2">
           <div className="text-left">
-            <h1 className="font-serif text-white text-sm leading-tight">
+            <h1 className="font-serif text-white text-lg leading-tight">
               La Casita de la Paella
             </h1>
-            <p className="text-red-600 text-[10px] tracking-widest uppercase leading-none mb-0.5">
+            <p className="text-red-600 text-[10px] tracking-widest uppercase leading-none mb-0.5 pt-2">
               Le menu
             </p>
+            <br></br>
+            <WhatsappContact />
           </div>
         </div>
 
         {/* logo */}
-        <Image
+        {/* <Image
           src="/images/logo.png"
           alt="Espagne"
           width={60}
           height={60}
           className="object-contain"
-        />
+        /> */}
       </header>
 
       {/* ── TITRE CATÉGORIE ACTIVE ── */}
