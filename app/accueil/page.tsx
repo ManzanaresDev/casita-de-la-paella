@@ -58,7 +58,7 @@ export default async function AccueilPage() {
               className="object-contain"
               priority
             />
-            {/* <WhatsappContact /> */}
+            <WhatsappContact />
           </div>
           {/* TEXTE */}
           <div className="text-center">
