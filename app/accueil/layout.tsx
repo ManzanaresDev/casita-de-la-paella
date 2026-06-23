@@ -19,10 +19,6 @@ export default function BasiqueLayout({
       style={{
         background:
           "linear-gradient(to right, rgb(12, 10, 9), rgb(68, 64, 60))",
-        //   backgroundImage: 'url("/images/fond.jpg")',
-        //   backgroundPosition: "center",
-        //   backgroundRepeat: "no-repeat",
-        //   backgroundSize: "cover",
       }}
     >
       {children}

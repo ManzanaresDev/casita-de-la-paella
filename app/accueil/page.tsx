@@ -49,7 +49,7 @@ export default async function AccueilPage() {
       <header className="hidden md:block border-b-2 text-stone-200 border-red-800 py-3">
         <div className="max-w-6xl mx-auto grid grid-cols-3 items-center px-6">
           {/* LOGO */}
-          <div className="flex justify-start">
+          <div className="flex justify-start max-lg:flex-col max-lg:gap-4">
             <Image
               src="/images/logo.png"
               alt="Logo"

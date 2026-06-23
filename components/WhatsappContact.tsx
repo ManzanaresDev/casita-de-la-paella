@@ -1,6 +1,7 @@
 "use client";
 // components/WhatsappContact.tsx
-import { FaWhatsapp } from "react-icons/fa";
+// import { FaWhatsapp } from "react-icons/fa";
+import { FaPhone } from "react-icons/fa";
 
 export default function WhatsappContact() {
   const phoneNumber = process.env.NEXT_PUBLIC_PhoneNumber;
@@ -11,7 +12,8 @@ export default function WhatsappContact() {
       rel="noopener noreferrer"
       className="whatsapp-container"
     >
-      <FaWhatsapp size={28} />
+      {/* <FaWhatsapp size={28} /> */}
+      <FaPhone size={28} />
       <span>{phoneNumber}</span>
 
       <style jsx>{`
