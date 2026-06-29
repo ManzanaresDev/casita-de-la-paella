@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Logo from "@/public/images/logo.png";
 import { useEffect, useState } from "react";
+import WhatsappContact from "@/components/WhatsappContact";
 
 export default function HeroPage() {
   const [visible, setVisible] = useState(false);
@@ -21,7 +22,7 @@ export default function HeroPage() {
     <div className="z-10 text-center flex flex-col items-center justify-center min-h-screen bg-black">
       <Link href="/accueil" className="inline-block">
         <div
-          className={`
+          className={`relative flex justify-center items-center
     transition-opacity duration-1500 ease-out delay-1000
     ${visible ? "opacity-100" : "opacity-0"}
   `}
@@ -34,6 +35,10 @@ export default function HeroPage() {
             priority
             className="drop-shadow-2xl"
           />
+
+          <div className="absolute top-12 left-1/2 -translate-x-1/2 z-10">
+            <WhatsappContact />
+          </div>
         </div>
       </Link>
 
